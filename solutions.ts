@@ -15,3 +15,11 @@ export function processInput(value: string | number | boolean): string | number 
 
   return value ? "Active" : "Inactive";
 }
+
+// Problem 3: Format a readonly coordinate tuple
+export function formatCoordinate(
+  coordinate: readonly [number, number, string],
+): string {
+  const [latitude, longitude, locationName] = coordinate;
+  return `Location: ${locationName} (${latitude}, ${longitude})`;
+}
