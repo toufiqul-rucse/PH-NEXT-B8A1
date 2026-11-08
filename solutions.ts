@@ -23,3 +23,14 @@ export function formatCoordinate(
   const [latitude, longitude, locationName] = coordinate;
   return `Location: ${locationName} (${latitude}, ${longitude})`;
 }
+
+// Problem 4: Concatenate arrays of the same type
+export function concatenateArrays<T>(...arrays: T[][]): T[] {
+  const combined: T[] = [];
+
+  for (const array of arrays) {
+    combined.push(...array);
+  }
+
+  return combined;
+}
