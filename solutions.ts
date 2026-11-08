@@ -34,3 +34,20 @@ export function concatenateArrays<T>(...arrays: T[][]): T[] {
 
   return combined;
 }
+
+// Problem 5: Filter published courses by student count
+export interface Course {
+  title: string;
+  students: number;
+  isPublished: boolean;
+}
+
+export function getPopularCourses(
+  courses: Course[],
+  minStudents: number,
+): Course[] {
+  return courses.filter(
+    (course: Course): boolean =>
+      course.isPublished && course.students >= minStudents,
+  );
+}
