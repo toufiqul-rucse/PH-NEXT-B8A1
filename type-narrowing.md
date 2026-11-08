@@ -2,54 +2,63 @@
 
 ## Introduction
 
-Type narrowing is the process of refining a broad type into a more specific type inside a particular branch of code. It lets TypeScript verify that an operation is valid before it runs, especially when values can have several possible shapes.
+A union type allows a variable to hold values of more than one type. Before using a value, however, TypeScript needs evidence that the value supports the operation being performed. Type narrowing is the process of refining a broad type into a more specific type through runtime checks.
 
-## Practical narrowing
+## Detailed Explanation
 
-With a union, `typeof` checks primitive values and narrows the variable for the selected branch:
+The `typeof` operator is useful for JavaScript primitive types. After checking a value, TypeScript understands which branch is safe.
 
 ```ts
-function describe(value: string | number): string {
+function format(value: string | number): string {
   if (typeof value === "string") {
     return value.trim().toLowerCase();
   }
+
   return value.toFixed(2);
 }
 ```
 
-For class instances, `instanceof` checks the runtime prototype chain:
+The `instanceof` operator checks whether an object was created by a particular class or constructor. It is useful when different class instances provide different methods.
 
 ```ts
-class ApiError extends Error {
-  statusCode: number;
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
+class Dog {
+  bark(): string {
+    return "Woof";
   }
 }
 
-function messageFor(error: Error | ApiError): string {
-  if (error instanceof ApiError) {
-    return `${error.statusCode}: ${error.message}`;
+class Cat {
+  meow(): string {
+    return "Meow";
   }
-  return error.message;
+}
+
+function speak(pet: Dog | Cat): string {
+  if (pet instanceof Dog) {
+    return pet.bark();
+  }
+
+  return pet.meow();
 }
 ```
 
-The `in` operator is useful when alternatives are object types with different properties:
+The `in` operator checks whether a property exists on an object. TypeScript can use that check to distinguish object types with different properties.
 
 ```ts
-type EmailContact = { email: string };
-type PhoneContact = { phone: string };
+type Admin = { permissions: string[] };
+type Guest = { visitCode: string };
 
-function contactLabel(contact: EmailContact | PhoneContact): string {
-  if ("email" in contact) return contact.email;
-  return contact.phone;
+function describe(user: Admin | Guest): string {
+  if ("permissions" in user) {
+    return user.permissions.join(", ");
+  }
+
+  return user.visitCode;
 }
 ```
 
-These checks are executable JavaScript, not just compiler hints. TypeScript follows the condition and control flow to understand which members are safe in each branch. A good check should match a real runtime distinction; casting a value merely silences the compiler without proving that distinction.
+These checks do more than prevent runtime mistakes: they communicate the intended logic to the compiler and to other developers.
 
 ## Conclusion
 
-Use `typeof` for primitives, `instanceof` for class instances, and `in` for object properties. Thoughtful narrowing documents the cases your program handles and catches unsafe assumptions during development.
+Use `typeof` for primitive values, `instanceof` for class instances, and `in` for property-based object distinctions. Correct narrowing makes union types practical while preserving TypeScript's static safety.
