@@ -51,3 +51,11 @@ export function getPopularCourses(
       course.isPublished && course.students >= minStudents,
   );
 }
+
+// Problem 6: Pluck a property from each object
+export function pluckValues<T, K extends keyof T>(
+  items: T[],
+  key: K,
+): T[K][] {
+  return items.map((item: T): T[K] => item[key]);
+}
