@@ -87,3 +87,17 @@ export class Manager extends Employee {
     return `Manager of ${this._department}: ${this.name}`;
   }
 }
+
+// Problem 8: Validate an age asynchronously
+export function validateAgeAsync(age: number): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    if (age < 18) {
+      reject(new Error("Access Denied: Must be 18 or older"));
+      return;
+    }
+
+    setTimeout((): void => {
+      resolve("Access Granted");
+    }, 1000);
+  });
+}
