@@ -59,3 +59,31 @@ export function pluckValues<T, K extends keyof T>(
 ): T[K][] {
   return items.map((item: T): T[K] => item[key]);
 }
+
+// Problem 7: Employee base class
+export class Employee {
+  protected name: string;
+  private _baseSalary: number;
+
+  constructor(name: string, baseSalary: number) {
+    this.name = name;
+    this._baseSalary = baseSalary;
+  }
+
+  public getDetails(): string {
+    return `Employee: ${this.name}, Base Salary: ${this._baseSalary}`;
+  }
+}
+
+export class Manager extends Employee {
+  private _department: string;
+
+  constructor(name: string, baseSalary: number, department: string) {
+    super(name, baseSalary);
+    this._department = department;
+  }
+
+  public getRoleInfo(): string {
+    return `Manager of ${this._department}: ${this.name}`;
+  }
+}
